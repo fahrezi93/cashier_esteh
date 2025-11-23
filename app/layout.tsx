@@ -14,8 +14,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Es Teh Indonesia - POS System",
-  description: "Modern Point of Sale system for Es Teh Indonesia franchise",
+  title: "Teh Barudak Indonesia - POS System",
+  description: "Modern Point of Sale system for Teh Barudak Indonesia franchise",
   icons: {
     icon: [
       { url: '/esteh.png' },

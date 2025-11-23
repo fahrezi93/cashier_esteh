@@ -27,7 +27,7 @@ export default function ProductsPage() {
         isActive: true
     });
 
-    const categories = ['Classic Series', 'Fruit Series', 'Milk Series'];
+    const categories = ['Tea Series', 'Mojito Series', 'Yakult Series', 'Milk Series', 'Signature Series'];
 
     useEffect(() => {
         fetchProducts();
@@ -162,7 +162,7 @@ export default function ProductsPage() {
             <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
                 <div>
                     <h1 className="text-2xl sm:text-3xl font-bold text-secondary-900">Manajemen Produk</h1>
-                    <p className="text-secondary-500">Kelola produk minuman Es Teh</p>
+                    <p className="text-secondary-500">Kelola produk minuman Teh Barudak</p>
                 </div>
                 <button
                     onClick={() => openModal()}
@@ -300,7 +300,7 @@ export default function ProductsPage() {
                                     value={formData.name}
                                     onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                                     className="w-full px-3 py-2 rounded-lg border border-gray-200 focus:border-primary-400 focus:ring-1 focus:ring-primary-400 outline-none"
-                                    placeholder="e.g. Original Es Teh"
+                                    placeholder="e.g. Jasmine Tea"
                                 />
                             </div>
 

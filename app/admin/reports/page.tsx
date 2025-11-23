@@ -92,7 +92,7 @@ export default function ReportsPage() {
             // Header
             doc.setFontSize(20);
             doc.setFont('helvetica', 'bold');
-            doc.text('ES TEH INDONESIA', 105, 20, { align: 'center' });
+            doc.text('TEH BARUDAK INDONESIA', 105, 20, { align: 'center' });
 
             doc.setFontSize(16);
             doc.text('Laporan Penjualan', 105, 30, { align: 'center' });

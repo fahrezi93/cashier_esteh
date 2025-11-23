@@ -1,13 +1,13 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { Search, ShoppingCart, Trash2, Plus, Minus, Receipt as ReceiptIcon, History, X, Printer, LogOut, Loader2, CheckCircle2, Share2 } from 'lucide-react';
+import { Search, ShoppingCart, Plus, Minus, Receipt as ReceiptIcon, History, X, Printer, LogOut, Loader2, CheckCircle2, Share2 } from 'lucide-react';
 import { clsx } from 'clsx';
 import { useSession } from 'next-auth/react';
 import { handleLogout } from './actions';
 import { printThermalReceipt } from '@/lib/printer-bluetooth';
 
-const categories = ["All", "Classic Series", "Fruit Series", "Milk Series"];
+const categories = ["All", "Tea Series", "Mojito Series", "Yakult Series", "Milk Series", "Signature Series"];
 
 interface Product {
     id: number;
@@ -50,7 +50,6 @@ export default function POSPage() {
     const [lastTransaction, setLastTransaction] = useState<Transaction | null>(null);
     const [transactions, setTransactions] = useState<Transaction[]>([]);
     const [products, setProducts] = useState<Product[]>([]);
-    const [loading, setLoading] = useState(true);
     const [showCart, setShowCart] = useState(false); // For mobile cart toggle
     const [isLoggingOut, setIsLoggingOut] = useState(false); // Loading state for logout
     const [showLogoutModal, setShowLogoutModal] = useState(false); // Logout confirmation modal
@@ -82,11 +81,24 @@ export default function POSPage() {
                 if (transactionsRes.ok) {
                     const transactionsData = await transactionsRes.json();
                     // Transform database transactions to match UI format
-                    const formattedTransactions = transactionsData.map((trx: any) => ({
+                    interface DbTransaction {
+                        id: number;
+                        createdAt: string;
+                        totalAmount: number;
+                        cashAmount: number | null;
+                        changeAmount: number | null;
+                        paymentMethod: string;
+                        items: Array<{
+                            productName: string;
+                            quantity: number;
+                            priceAtSnapshot: number;
+                        }>;
+                    }
+                    const formattedTransactions = (transactionsData as DbTransaction[]).map((trx) => ({
                         id: `TRX-${trx.id.toString().padStart(3, '0')}`,
                         cashier: 'John Doe',
                         date: new Date(trx.createdAt).toLocaleString('id-ID'),
-                        items: trx.items.map((item: any) => ({
+                        items: trx.items.map((item) => ({
                             name: item.productName || 'Unknown Product',
                             quantity: item.quantity,
                             price: item.priceAtSnapshot,
@@ -100,8 +112,6 @@ export default function POSPage() {
                 }
             } catch (error) {
                 console.error('Error fetching data:', error);
-            } finally {
-                setLoading(false);
             }
         };
 
@@ -152,10 +162,14 @@ export default function POSPage() {
     const change = paymentAmount ? parseInt(paymentAmount) - totalAmount : 0;
 
     const handleCheckout = async () => {
+        // eslint-disable-next-line react-hooks/purity
+        const timestamp = Date.now();
+        const transactionDate = new Date();
+        
         const transaction: Transaction = {
-            id: `TRX-${Date.now().toString().slice(-6)}`,
+            id: `TRX-${timestamp.toString().slice(-6)}`,
             cashier: cashierName,
-            date: new Date().toLocaleString('id-ID', {
+            date: transactionDate.toLocaleString('id-ID', {
                 year: 'numeric',
                 month: '2-digit',
                 day: '2-digit',
@@ -233,8 +247,9 @@ export default function POSPage() {
                 <header className="bg-white px-3 sm:px-6 py-3 sm:py-4 border-b border-gray-200 flex justify-between items-center">
                     <div className="flex items-center gap-2 sm:gap-6 flex-1">
                         <div className="flex items-center gap-2">
-                            <img src="/esteh.png" alt="Es Teh Indonesia" className="w-8 h-8 sm:w-10 sm:h-10 object-contain" />
-                            <h1 className="text-lg sm:text-xl font-bold text-gray-800">Es Teh POS</h1>
+                            {/* eslint-disable-next-line @next/next/no-img-element */}
+                            <img src="/esteh.png" alt="Teh Barudak Indonesia" className="w-8 h-8 sm:w-10 sm:h-10 object-contain" />
+                            <h1 className="text-lg sm:text-xl font-bold text-gray-800">Teh Barudak POS</h1>
                         </div>
                         <div className="relative flex-1 sm:flex-initial">
                             <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={18} />
@@ -305,6 +320,7 @@ export default function POSPage() {
                                 className="bg-white rounded-xl p-2 sm:p-3 border border-gray-200 hover:border-primary-400 hover:shadow-md transition-all group"
                             >
                                 <div className="aspect-square rounded-lg bg-gray-100 mb-2 overflow-hidden relative">
+                                    {/* eslint-disable-next-line @next/next/no-img-element */}
                                     <img src={product.imageUrl || ''} alt={product.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
                                     <div className="absolute bottom-1 right-1 sm:bottom-2 sm:right-2 bg-white px-1.5 sm:px-2 py-0.5 rounded-md text-xs font-semibold text-primary-600 shadow-sm">
                                         Rp {product.price.toLocaleString()}
@@ -387,6 +403,7 @@ export default function POSPage() {
                         cart.map(item => (
                             <div key={item.product.id} className="flex gap-2 sm:gap-3 items-center bg-gray-50 p-2 sm:p-3 rounded-lg border border-gray-200">
                                 <div className="w-12 h-12 sm:w-14 sm:h-14 bg-gray-200 rounded-md overflow-hidden shrink-0">
+                                    {/* eslint-disable-next-line @next/next/no-img-element */}
                                     <img src={item.product.imageUrl || ''} alt={item.product.name} className="w-full h-full object-cover" />
                                 </div>
                                 <div className="flex-1 min-w-0">
@@ -508,7 +525,7 @@ export default function POSPage() {
                         <div className="bg-purple-50 px-3 py-2 rounded-lg space-y-1">
                             <p className="text-xs text-purple-700 font-medium">🏦 Transfer ke:</p>
                             <p className="text-xs text-purple-600">BCA: 1234567890</p>
-                            <p className="text-xs text-purple-600">a.n. Es Teh Indonesia</p>
+                            <p className="text-xs text-purple-600">a.n. Teh Barudak Indonesia</p>
                         </div>
                     )}
 
@@ -624,7 +641,7 @@ export default function POSPage() {
                             {/* Share to WhatsApp Button */}
                             <button
                                 onClick={() => {
-                                    const message = `*STRUK PEMBAYARAN*\n*ES TEH INDONESIA*\n\nNo. Transaksi: ${lastTransaction.id}\nTanggal: ${lastTransaction.date}\nKasir: ${lastTransaction.cashier}\n\n*PESANAN:*\n${lastTransaction.items.map(item => `${item.quantity}x ${item.name} - Rp ${(item.quantity * item.price).toLocaleString('id-ID')}`).join('\n')}\n\n*TOTAL: Rp ${lastTransaction.total.toLocaleString('id-ID')}*\nMetode: ${lastTransaction.paymentMethod === 'cash' ? 'Tunai' : lastTransaction.paymentMethod === 'qris' ? 'QRIS' : 'Transfer'}${lastTransaction.paymentMethod === 'cash' ? `\nTunai: Rp ${lastTransaction.cash.toLocaleString('id-ID')}\nKembalian: Rp ${lastTransaction.change.toLocaleString('id-ID')}` : ''}\n\nTerima kasih telah berbelanja! 🎉\nFollow us @esteh.indonesia`;
+                                    const message = `*STRUK PEMBAYARAN*\n*TEH BARUDAK INDONESIA*\n\nNo. Transaksi: ${lastTransaction.id}\nTanggal: ${lastTransaction.date}\nKasir: ${lastTransaction.cashier}\n\n*PESANAN:*\n${lastTransaction.items.map(item => `${item.quantity}x ${item.name} - Rp ${(item.quantity * item.price).toLocaleString('id-ID')}`).join('\n')}\n\n*TOTAL: Rp ${lastTransaction.total.toLocaleString('id-ID')}*\nMetode: ${lastTransaction.paymentMethod === 'cash' ? 'Tunai' : lastTransaction.paymentMethod === 'qris' ? 'QRIS' : 'Transfer'}${lastTransaction.paymentMethod === 'cash' ? `\nTunai: Rp ${lastTransaction.cash.toLocaleString('id-ID')}\nKembalian: Rp ${lastTransaction.change.toLocaleString('id-ID')}` : ''}\n\nTerima kasih telah berbelanja!`;
                                     const whatsappUrl = `https://wa.me/?text=${encodeURIComponent(message)}`;
                                     window.open(whatsappUrl, '_blank');
                                 }}
@@ -671,9 +688,9 @@ export default function POSPage() {
                         <div className="p-4 sm:p-6 space-y-4">
                             {/* Receipt Details */}
                             <div className="text-center space-y-1">
-                                <h3 className="font-bold text-xl">ES TEH INDONESIA</h3>
-                                <p className="text-sm text-gray-600">Franchise Store #123</p>
-                                <p className="text-sm text-gray-600">Jakarta, Indonesia</p>
+                                <h3 className="font-bold text-xl">TEH BARUDAK INDONESIA</h3>
+                                <p className="text-sm text-gray-600">Jl. Raya Kauman Kudu No.19</p>
+                                <p className="text-sm text-gray-600">Genuk, Semarang 50113</p>
                             </div>
 
                             <div className="border-t border-gray-200 pt-4 space-y-2 text-sm">
@@ -736,7 +753,7 @@ export default function POSPage() {
 
                             <div className="text-center text-sm text-gray-600 border-t border-gray-200 pt-4">
                                 <p>Terima kasih atas kunjungan Anda!</p>
-                                <p>Follow us @esteh.indonesia</p>
+                                <p>Follow us @tehbarudak.id</p>
                             </div>
 
                             <button
@@ -891,10 +908,11 @@ export default function POSPage() {
                                     try {
                                         await handleLogout();
                                         console.log('✅ [MODAL] handleLogout() completed');
-                                    } catch (error: any) {
-                                        console.log('🔄 [MODAL] Caught error:', error?.message || error);
+                                    } catch (error) {
+                                        const err = error as Error;
+                                        console.log('🔄 [MODAL] Caught error:', err?.message || error);
                                         // NEXT_REDIRECT is expected, let it propagate
-                                        if (error?.message?.includes('NEXT_REDIRECT')) {
+                                        if (err?.message?.includes('NEXT_REDIRECT')) {
                                             console.log('✅ [MODAL] NEXT_REDIRECT detected - this is normal!');
                                             throw error;
                                         }

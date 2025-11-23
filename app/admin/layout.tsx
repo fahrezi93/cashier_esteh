@@ -27,7 +27,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                     <div className="w-10 h-10 rounded-full bg-primary-100 flex items-center justify-center text-primary-600">
                         <CupSoda size={20} />
                     </div>
-                    <span className="text-xl font-bold text-secondary-900">Es Teh Admin</span>
+                    <span className="text-xl font-bold text-secondary-900">Teh Barudak Admin</span>
                 </div>
 
                 <nav className="flex-1 p-4 space-y-2">

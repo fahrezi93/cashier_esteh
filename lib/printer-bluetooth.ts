@@ -52,12 +52,12 @@ function buildReceiptData(transaction: Transaction): Uint8Array {
     // Bold + Large text
     addCommand(0x1B, 0x45, 0x01); // ESC E 1 (Bold ON)
     addCommand(0x1D, 0x21, 0x11); // GS ! 17 (Double size)
-    addText('ES TEH INDONESIA\n');
+    addText('TEH BARUDAK INDONESIA\n');
     addCommand(0x1B, 0x45, 0x00); // ESC E 0 (Bold OFF)
     addCommand(0x1D, 0x21, 0x00); // GS ! 0 (Normal size)
     
-    addText('Franchise Store #123\n');
-    addText('Jakarta, Indonesia\n\n');
+    addText('Jl. Raya Kauman Kudu No.19\n');
+    addText('Genuk, Semarang 50113\n\n');
 
     // Left align
     addCommand(0x1B, 0x61, 0x00); // ESC a 0
@@ -113,9 +113,9 @@ function buildReceiptData(transaction: Transaction): Uint8Array {
     addCommand(0x1B, 0x61, 0x01); // ESC a 1
     
     addText('Thank you for your order!\n');
-    addText('Follow us @esteh.indonesia\n\n');
-    addText('Wifi: EsTeh_Free\n');
-    addText('Pass: esteh123\n\n\n');
+    addText('Follow us @tehbarudak.id\n\n');
+    addText('Wifi: TehBarudak_Free\n');
+    addText('Pass: barudak123\n\n\n');
 
     // Cut paper (partial cut)
     addCommand(0x1D, 0x56, 0x01); // GS V 1

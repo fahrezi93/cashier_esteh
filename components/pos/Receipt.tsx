@@ -30,9 +30,9 @@ export const Receipt = ({ transaction }: ReceiptProps) => {
     return (
         <div id="printable-receipt" className="hidden print:block w-[58mm] p-2 font-mono text-[10px] leading-tight text-black bg-white absolute top-0 left-0 z-9999">
             <div className="text-center mb-4">
-                <h1 className="font-bold text-sm uppercase">Es Teh Indonesia</h1>
-                <p>Franchise Store #123</p>
-                <p>Jakarta, Indonesia</p>
+                <h1 className="font-bold text-sm uppercase">Teh Barudak Indonesia</h1>
+                <p>Jl. Raya Kauman Kudu No.19</p>
+                <p>Genuk, Semarang 50113</p>
             </div>
 
             <div className="mb-2 border-b border-dashed border-black pb-2 space-y-1">
@@ -87,8 +87,8 @@ export const Receipt = ({ transaction }: ReceiptProps) => {
 
             <div className="text-center space-y-1">
                 <p>Thank you for your order!</p>
-                <p>Follow us @esteh.indonesia</p>
-                <p>Wifi: EsTeh_Free / Pass: esteh123</p>
+                <p>Follow us @tehbarudak.id</p>
+                <p>Wifi: TehBarudak_Free / Pass: barudak123</p>
             </div>
         </div>
     );

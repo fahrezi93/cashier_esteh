@@ -1,6 +1,6 @@
-# 🧋 Es Teh Cashier - Point of Sale System
+# 🧋 Teh Barudak Indonesia - Point of Sale System
 
-Modern, responsive Point of Sale (POS) system built with Next.js 15, TypeScript, and PostgreSQL.
+Modern, responsive Point of Sale (POS) system built with Next.js 16, TypeScript, and PostgreSQL.
 
 ![Next.js](https://img.shields.io/badge/Next.js-16.0-black)
 ![TypeScript](https://img.shields.io/badge/TypeScript-5.0-blue)
