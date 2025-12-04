@@ -319,9 +319,25 @@ export default function POSPage() {
                                 key={product.id}
                                 className="bg-white rounded-xl p-2 sm:p-3 border border-gray-200 hover:border-primary-400 hover:shadow-md transition-all group"
                             >
-                                <div className="aspect-square rounded-lg bg-gray-100 mb-2 overflow-hidden relative">
-                                    {/* eslint-disable-next-line @next/next/no-img-element */}
-                                    <img src={product.imageUrl || ''} alt={product.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
+                                <div className="aspect-square rounded-lg bg-gradient-to-br from-primary-100 to-primary-200 mb-2 overflow-hidden relative flex items-center justify-center">
+                                    {product.imageUrl ? (
+                                        // eslint-disable-next-line @next/next/no-img-element
+                                        <img 
+                                            src={product.imageUrl} 
+                                            alt={product.name} 
+                                            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                                            onError={(e) => {
+                                                e.currentTarget.style.display = 'none';
+                                                e.currentTarget.nextElementSibling?.classList.remove('hidden');
+                                            }}
+                                        />
+                                    ) : null}
+                                    <span className={clsx(
+                                        "text-primary-600 font-bold text-3xl sm:text-4xl",
+                                        product.imageUrl ? "hidden" : ""
+                                    )}>
+                                        {product.name.charAt(0).toUpperCase()}
+                                    </span>
                                     <div className="absolute bottom-1 right-1 sm:bottom-2 sm:right-2 bg-white px-1.5 sm:px-2 py-0.5 rounded-md text-xs font-semibold text-primary-600 shadow-sm">
                                         Rp {product.price.toLocaleString()}
                                     </div>
@@ -402,9 +418,25 @@ export default function POSPage() {
                     ) : (
                         cart.map(item => (
                             <div key={item.product.id} className="flex gap-2 sm:gap-3 items-center bg-gray-50 p-2 sm:p-3 rounded-lg border border-gray-200">
-                                <div className="w-12 h-12 sm:w-14 sm:h-14 bg-gray-200 rounded-md overflow-hidden shrink-0">
-                                    {/* eslint-disable-next-line @next/next/no-img-element */}
-                                    <img src={item.product.imageUrl || ''} alt={item.product.name} className="w-full h-full object-cover" />
+                                <div className="w-12 h-12 sm:w-14 sm:h-14 bg-gradient-to-br from-primary-100 to-primary-200 rounded-md overflow-hidden shrink-0 flex items-center justify-center">
+                                    {item.product.imageUrl ? (
+                                        // eslint-disable-next-line @next/next/no-img-element
+                                        <img 
+                                            src={item.product.imageUrl} 
+                                            alt={item.product.name} 
+                                            className="w-full h-full object-cover"
+                                            onError={(e) => {
+                                                e.currentTarget.style.display = 'none';
+                                                e.currentTarget.nextElementSibling?.classList.remove('hidden');
+                                            }}
+                                        />
+                                    ) : null}
+                                    <span className={clsx(
+                                        "text-primary-600 font-bold text-lg",
+                                        item.product.imageUrl ? "hidden" : ""
+                                    )}>
+                                        {item.product.name.charAt(0).toUpperCase()}
+                                    </span>
                                 </div>
                                 <div className="flex-1 min-w-0">
                                     <h3 className="font-medium text-sm text-gray-800 truncate">{item.product.name}</h3>
@@ -540,27 +572,7 @@ export default function POSPage() {
                         Checkout
                     </button>
 
-                    {/* Logout Button - Mobile Only */}
-                    <button
-                        onClick={() => {
-                            console.log('🔴 [CLIENT-MOBILE] Logout button clicked');
-                            setShowLogoutModal(true);
-                        }}
-                        disabled={isLoggingOut}
-                        className="lg:hidden w-full border border-red-200 text-red-600 py-2 rounded-lg font-medium hover:bg-red-50 transition-colors text-sm flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
-                    >
-                        {isLoggingOut ? (
-                            <>
-                                <Loader2 size={18} className="animate-spin" />
-                                Logging out...
-                            </>
-                        ) : (
-                            <>
-                                <LogOut size={18} />
-                                Logout
-                            </>
-                        )}
-                    </button>
+
                 </div>
             </div>
 

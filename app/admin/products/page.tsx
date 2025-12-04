@@ -264,17 +264,26 @@ export default function ProductsPage() {
                                     <tr key={product.id} className="hover:bg-secondary-25">
                                         <td className="px-6 py-4">
                                             <div className="flex items-center gap-3">
-                                                <div className="w-12 h-12 bg-gray-100 rounded-lg overflow-hidden shrink-0">
+                                                <div className="w-12 h-12 bg-gradient-to-br from-primary-100 to-primary-200 rounded-lg overflow-hidden shrink-0 flex items-center justify-center">
                                                     {product.imageUrl ? (
                                                         // eslint-disable-next-line @next/next/no-img-element
                                                         <img
                                                             src={product.imageUrl}
                                                             alt={product.name}
                                                             className="w-full h-full object-cover"
+                                                            onError={(e) => {
+                                                                // Hide broken image and show placeholder
+                                                                e.currentTarget.style.display = 'none';
+                                                                e.currentTarget.nextElementSibling?.classList.remove('hidden');
+                                                            }}
                                                         />
-                                                    ) : (
-                                                        <div className="w-full h-full flex items-center justify-center text-gray-400 text-xs">No img</div>
-                                                    )}
+                                                    ) : null}
+                                                    <span className={clsx(
+                                                        "text-primary-600 font-bold text-lg",
+                                                        product.imageUrl ? "hidden" : ""
+                                                    )}>
+                                                        {product.name.charAt(0).toUpperCase()}
+                                                    </span>
                                                 </div>
                                                 <span className="font-medium text-secondary-900">{product.name}</span>
                                             </div>
