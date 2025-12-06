@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { Search, ShoppingCart, Plus, Minus, Receipt as ReceiptIcon, History, X, Printer, LogOut, Loader2, CheckCircle2, Share2 } from 'lucide-react';
+import { Search, ShoppingCart, Plus, Minus, Receipt as ReceiptIcon, History, X, Printer, LogOut, Loader2, CheckCircle2, Share2, Banknote, QrCode, Building2 } from 'lucide-react';
 import { clsx } from 'clsx';
 import { useSession } from 'next-auth/react';
 import { handleLogout } from './actions';
@@ -492,35 +492,38 @@ export default function POSPage() {
                             <button
                                 onClick={() => setPaymentMethod('cash')}
                                 className={clsx(
-                                    "px-3 py-2 rounded-lg text-xs font-medium border transition-all",
+                                    "px-3 py-2 rounded-lg text-xs font-medium border transition-all flex items-center justify-center gap-1.5",
                                     paymentMethod === 'cash'
                                         ? "bg-primary-500 text-white border-primary-500"
                                         : "bg-white text-gray-600 border-gray-200 hover:border-primary-300"
                                 )}
                             >
-                                💵 Tunai
+                                <Banknote size={14} />
+                                Tunai
                             </button>
                             <button
                                 onClick={() => setPaymentMethod('qris')}
                                 className={clsx(
-                                    "px-3 py-2 rounded-lg text-xs font-medium border transition-all",
+                                    "px-3 py-2 rounded-lg text-xs font-medium border transition-all flex items-center justify-center gap-1.5",
                                     paymentMethod === 'qris'
                                         ? "bg-primary-500 text-white border-primary-500"
                                         : "bg-white text-gray-600 border-gray-200 hover:border-primary-300"
                                 )}
                             >
-                                📱 QRIS
+                                <QrCode size={14} />
+                                QRIS
                             </button>
                             <button
                                 onClick={() => setPaymentMethod('transfer')}
                                 className={clsx(
-                                    "px-3 py-2 rounded-lg text-xs font-medium border transition-all",
+                                    "px-3 py-2 rounded-lg text-xs font-medium border transition-all flex items-center justify-center gap-1.5",
                                     paymentMethod === 'transfer'
                                         ? "bg-primary-500 text-white border-primary-500"
                                         : "bg-white text-gray-600 border-gray-200 hover:border-primary-300"
                                 )}
                             >
-                                🏦 Transfer
+                                <Building2 size={14} />
+                                Transfer
                             </button>
                         </div>
                     </div>
@@ -555,7 +558,7 @@ export default function POSPage() {
                     {/* Transfer Info */}
                     {paymentMethod === 'transfer' && (
                         <div className="bg-purple-50 px-3 py-2 rounded-lg space-y-1">
-                            <p className="text-xs text-purple-700 font-medium">🏦 Transfer ke:</p>
+                            <p className="text-xs text-purple-700 font-medium flex items-center gap-1"><Building2 size={12} /> Transfer ke:</p>
                             <p className="text-xs text-purple-600">BCA: 1234567890</p>
                             <p className="text-xs text-purple-600">a.n. Teh Barudak Indonesia</p>
                         </div>
@@ -623,10 +626,10 @@ export default function POSPage() {
                             )}
                             <div className="flex justify-between items-center text-sm">
                                 <span className="text-gray-600">Metode Pembayaran</span>
-                                <span className="font-medium">
-                                    {lastTransaction.paymentMethod === 'cash' && '💵 Tunai'}
-                                    {lastTransaction.paymentMethod === 'qris' && '📱 QRIS'}
-                                    {lastTransaction.paymentMethod === 'transfer' && '🏦 Transfer'}
+                                <span className="font-medium flex items-center gap-1">
+                                    {lastTransaction.paymentMethod === 'cash' && <><Banknote size={14} /> Tunai</>}
+                                    {lastTransaction.paymentMethod === 'qris' && <><QrCode size={14} /> QRIS</>}
+                                    {lastTransaction.paymentMethod === 'transfer' && <><Building2 size={14} /> Transfer</>}
                                 </span>
                             </div>
                         </div>
@@ -720,10 +723,10 @@ export default function POSPage() {
                                 </div>
                                 <div className="flex justify-between">
                                     <span className="text-gray-600">Metode Bayar:</span>
-                                    <span className="font-medium">
-                                        {lastTransaction.paymentMethod === 'cash' && '💵 Tunai'}
-                                        {lastTransaction.paymentMethod === 'qris' && '📱 QRIS'}
-                                        {lastTransaction.paymentMethod === 'transfer' && '🏦 Transfer'}
+                                    <span className="font-medium flex items-center gap-1">
+                                        {lastTransaction.paymentMethod === 'cash' && <><Banknote size={14} /> Tunai</>}
+                                        {lastTransaction.paymentMethod === 'qris' && <><QrCode size={14} /> QRIS</>}
+                                        {lastTransaction.paymentMethod === 'transfer' && <><Building2 size={14} /> Transfer</>}
                                     </span>
                                 </div>
                             </div>
@@ -811,10 +814,10 @@ export default function POSPage() {
                                                 </div>
                                                 <div className="text-right">
                                                     <p className="font-bold text-primary-600">Rp {trx.total.toLocaleString()}</p>
-                                                    <p className="text-xs text-gray-600">
-                                                        {trx.paymentMethod === 'cash' && '💵 Tunai'}
-                                                        {trx.paymentMethod === 'qris' && '📱 QRIS'}
-                                                        {trx.paymentMethod === 'transfer' && '🏦 Transfer'}
+                                                    <p className="text-xs text-gray-600 flex items-center gap-1">
+                                                        {trx.paymentMethod === 'cash' && <><Banknote size={12} /> Tunai</>}
+                                                        {trx.paymentMethod === 'qris' && <><QrCode size={12} /> QRIS</>}
+                                                        {trx.paymentMethod === 'transfer' && <><Building2 size={12} /> Transfer</>}
                                                     </p>
                                                 </div>
                                             </div>
